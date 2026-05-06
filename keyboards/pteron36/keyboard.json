@@ -11,10 +11,10 @@
         "bootmagic": true,
         "encoder": true,
         "extrakey": true,
-        "mousekey": true,
+        "mousekey": false,
         "nkro": false,
-        "oled": true,
-        "rgblight": true
+        "oled": false,
+        "rgblight": false
     },
     "qmk": {
         "locking": {
@@ -28,7 +28,7 @@
     },
     "diode_direction": "ROW2COL",
     "dynamic_keymap": {
-        "layer_count": 7
+        "layer_count": 5
     },
     "encoder": {
         "rotary": [

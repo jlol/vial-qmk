@@ -26,9 +26,7 @@ enum layer_names  {
   _SYMB,
   _NAV,
   _ADJUST,
-  _MOUSE,
-  _NUMB,
-  _FNR
+  _MOUSE
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -65,22 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,                               KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS, KC_TRNS,             KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
                                           KC_TRNS,KC_TRNS, KC_TRNS, KC_TRNS,             KC_TRNS,  KC_TRNS,  KC_TRNS,KC_TRNS
-  ),
-
-  [_NUMB] = LAYOUT_split_3x5_4_encoder(
-   KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,                               KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-   KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,                               KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-   KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS, KC_TRNS,             KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-                                         KC_TRNS,KC_TRNS, KC_TRNS, KC_TRNS,             KC_TRNS,  KC_TRNS,  KC_TRNS,KC_TRNS
-  ),
-
-  [_FNR] = LAYOUT_split_3x5_4_encoder(
-   KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,                               KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-   KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,                               KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-   KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS, KC_TRNS,             KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-                                          KC_TRNS,KC_TRNS, KC_TRNS, KC_TRNS,             KC_TRNS,  KC_TRNS,  KC_TRNS,KC_TRNS
   )
-
 };
 
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
@@ -89,6 +72,25 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [2] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
     [3] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
     [4] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
-    [5] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
-    [6] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
 };
+
+__attribute__((weak))
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        // Bottom row Shift keys: Fast response
+        case LSFT_T(KC_Z):
+        case RSFT_T(KC_SLSH):
+            return 150; // Faster (standard is 200)
+
+        // Home row mods: Slower to ensure intentional hold
+        case LGUI_T(KC_A):
+        case LALT_T(KC_S):
+        case RALT_T(KC_L):
+        case RGUI_T(KC_SCLN):
+            return 180; 
+
+        default:
+            return TAPPING_TERM;
+    }
+}
+
